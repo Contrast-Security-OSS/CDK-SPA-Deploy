@@ -4,6 +4,7 @@ import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
 import { Stack, App } from 'aws-cdk-lib/';
 import { SPADeploy } from '../lib';
+import { GeoRestriction } from "aws-cdk-lib/aws-cloudfront";
 
 
 test('Cloudfront Distribution Included', () => {
@@ -18,7 +19,7 @@ test('Cloudfront Distribution Included', () => {
 
   const template = Template.fromStack(stack);
   // THEN
-  template.hasResourceProperties('AWS::S3::Bucket', 
+  template.hasResourceProperties('AWS::S3::Bucket',
     Match.objectLike({
       WebsiteConfiguration: {
         IndexDocument: 'index.html',
@@ -27,7 +28,7 @@ test('Cloudfront Distribution Included', () => {
 
   template.hasResource('Custom::CDKBucketDeployment', {});
 
-  template.hasResourceProperties('AWS::CloudFront::Distribution', 
+  template.hasResourceProperties('AWS::CloudFront::Distribution',
     Match.objectLike({
       DistributionConfig: {
         CustomErrorResponses: [
@@ -55,7 +56,7 @@ test('Cloudfront Distribution Included', () => {
       },
   }));
 
-  template.hasResourceProperties('AWS::S3::BucketPolicy', 
+  template.hasResourceProperties('AWS::S3::BucketPolicy',
     Match.objectLike({
       PolicyDocument: {
         Statement: [
@@ -82,7 +83,7 @@ test('Cloudfront Distribution Included - with non-default error-doc cfg set', ()
 
 
   // THEN
-  template.hasResourceProperties('AWS::S3::Bucket', 
+  template.hasResourceProperties('AWS::S3::Bucket',
     Match.objectLike({
       WebsiteConfiguration: {
         IndexDocument: 'index.html',
@@ -92,7 +93,7 @@ test('Cloudfront Distribution Included - with non-default error-doc cfg set', ()
 
   template.hasResource('Custom::CDKBucketDeployment', {});
 
-  template.hasResourceProperties('AWS::CloudFront::Distribution', 
+  template.hasResourceProperties('AWS::CloudFront::Distribution',
     Match.objectLike({
       DistributionConfig: {
         CustomErrorResponses: [
@@ -120,7 +121,7 @@ test('Cloudfront Distribution Included - with non-default error-doc cfg set', ()
       },
   }));
 
-  template.hasResourceProperties('AWS::S3::BucketPolicy', 
+  template.hasResourceProperties('AWS::S3::BucketPolicy',
     Match.objectLike({
       PolicyDocument: {
         Statement: [
@@ -147,7 +148,7 @@ test('Cloudfront With Custom Cert and Aliases', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  template.hasResourceProperties('AWS::S3::Bucket', 
+  template.hasResourceProperties('AWS::S3::Bucket',
     Match.objectLike({
       WebsiteConfiguration: {
         IndexDocument: 'index.html'
@@ -156,7 +157,7 @@ test('Cloudfront With Custom Cert and Aliases', () => {
 
   template.hasResource('Custom::CDKBucketDeployment', {});
 
-  template.hasResourceProperties('AWS::CloudFront::Distribution', 
+  template.hasResourceProperties('AWS::CloudFront::Distribution',
     Match.objectLike({
       DistributionConfig: {
         Aliases: [
@@ -187,7 +188,7 @@ test('Cloudfront With Custom Role', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  template.hasResourceProperties('AWS::Lambda::Function', 
+  template.hasResourceProperties('AWS::Lambda::Function',
     Match.objectLike({
       Role: {
         "Fn::GetAtt": [
@@ -213,7 +214,7 @@ test('Basic Site Setup', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  template.hasResourceProperties('AWS::S3::Bucket', 
+  template.hasResourceProperties('AWS::S3::Bucket',
     Match.objectLike({
       WebsiteConfiguration: {
         IndexDocument: 'index.html'
@@ -222,7 +223,7 @@ test('Basic Site Setup', () => {
 
   template.hasResource('Custom::CDKBucketDeployment', {});
 
-  template.hasResourceProperties('AWS::S3::BucketPolicy', 
+  template.hasResourceProperties('AWS::S3::BucketPolicy',
     Match.objectLike({
       PolicyDocument: {
         Statement: [
@@ -252,7 +253,7 @@ test('Basic Site Setup with Error Doc set', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  template.hasResourceProperties('AWS::S3::Bucket', 
+  template.hasResourceProperties('AWS::S3::Bucket',
     Match.objectLike({
       WebsiteConfiguration: {
         IndexDocument: 'index.html',
@@ -262,7 +263,7 @@ test('Basic Site Setup with Error Doc set', () => {
 
   template.hasResource('Custom::CDKBucketDeployment', {});
 
-  template.hasResourceProperties('AWS::S3::BucketPolicy', 
+  template.hasResourceProperties('AWS::S3::BucketPolicy',
     Match.objectLike({
       PolicyDocument: {
         Statement: [
@@ -293,7 +294,7 @@ test('Basic Site Setup with Custom Role', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  template.hasResourceProperties('AWS::Lambda::Function', 
+  template.hasResourceProperties('AWS::Lambda::Function',
     Match.objectLike({
       Role: {
         "Fn::GetAtt": [
@@ -303,7 +304,7 @@ test('Basic Site Setup with Custom Role', () => {
       }
     }));
 
-    template.hasResourceProperties('AWS::S3::BucketPolicy', 
+    template.hasResourceProperties('AWS::S3::BucketPolicy',
     Match.objectLike({
       PolicyDocument: {
         Statement: [
@@ -359,7 +360,7 @@ test('Basic Site Setup with Undefined Role', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  template.hasResourceProperties('AWS::Lambda::Function', 
+  template.hasResourceProperties('AWS::Lambda::Function',
     Match.objectLike({
       Runtime: "python3.7",
       Role: {
@@ -385,7 +386,7 @@ test('Basic Site Setup, Encrypted Bucket', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  template.hasResourceProperties('AWS::S3::Bucket', 
+  template.hasResourceProperties('AWS::S3::Bucket',
     Match.objectLike({
       BucketEncryption: {
         ServerSideEncryptionConfiguration: [
@@ -403,7 +404,7 @@ test('Basic Site Setup, Encrypted Bucket', () => {
 
   template.hasResource('Custom::CDKBucketDeployment', {});
 
-  template.hasResourceProperties('AWS::S3::BucketPolicy', 
+  template.hasResourceProperties('AWS::S3::BucketPolicy',
     Match.objectLike({
       PolicyDocument: {
         Statement: [
@@ -433,7 +434,7 @@ test('Cloudfront With Encrypted Bucket', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  template.hasResourceProperties('AWS::S3::Bucket', 
+  template.hasResourceProperties('AWS::S3::Bucket',
     Match.objectLike({
       BucketEncryption: {
         ServerSideEncryptionConfiguration: [
@@ -581,6 +582,63 @@ test('Cloudfront With Custom SSL Method', () => {
   }));
 });
 
+test('Cloudfront With Custom Geo Restriction', () => {
+  const stack = new Stack();
+  const geoRestriction: GeoRestriction = {
+    restrictionType: 'whitelist',
+    locations: ['US'],
+  }
+  // WHEN
+  const deploy = new SPADeploy(stack, 'spaDeploy');
+
+  deploy.createSiteWithCloudfront({
+    indexDoc: 'index.html',
+    websiteFolder: 'website',
+    geoRestriction,
+  });
+
+  const template = Template.fromStack(stack);
+
+  // THEN
+  template.hasResource('Custom::CDKBucketDeployment', {});
+
+  template.hasResourceProperties('AWS::CloudFront::Distribution', Match.objectLike({
+    DistributionConfig: {
+      Restrictions: {
+        GeoRestriction: {
+          RestrictionType: geoRestriction.restrictionType,
+          Locations: geoRestriction.locations,
+        },
+      },
+    },
+  }));
+});
+
+test('Cloudfront With Custom Logging Config', () => {
+  const stack = new Stack();
+  // WHEN
+  const deploy = new SPADeploy(stack, 'spaDeploy');
+
+  deploy.createSiteWithCloudfront({
+    indexDoc: 'index.html',
+    websiteFolder: 'website',
+    loggingConfig: {},
+  });
+
+  const template = Template.fromStack(stack);
+
+  // THEN
+  template.hasResource('Custom::CDKBucketDeployment', {});
+
+  template.hasResourceProperties('AWS::CloudFront::Distribution', Match.objectLike({
+    DistributionConfig: {
+      Logging: {
+        Bucket: {},
+      },
+    },
+  }));
+});
+
 test('Basic Site Setup, IP Filter', () => {
   const stack = new Stack();
 
@@ -594,7 +652,7 @@ test('Basic Site Setup, IP Filter', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  template.hasResourceProperties('AWS::S3::Bucket', 
+  template.hasResourceProperties('AWS::S3::Bucket',
     Match.objectLike({
       BucketEncryption: {
         ServerSideEncryptionConfiguration: [
@@ -652,7 +710,7 @@ test('Create From Hosted Zone', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  template.hasResourceProperties('AWS::S3::Bucket', 
+  template.hasResourceProperties('AWS::S3::Bucket',
     Match.objectLike({
       BucketEncryption: {
         ServerSideEncryptionConfiguration: [
@@ -681,7 +739,7 @@ test('Create From Hosted Zone', () => {
     },
   }));
 
-  template.hasResourceProperties('AWS::S3::BucketPolicy', 
+  template.hasResourceProperties('AWS::S3::BucketPolicy',
     Match.objectLike({
       PolicyDocument: {
         Statement: [
@@ -746,7 +804,7 @@ test('Create From Hosted Zone with Custom Role', () => {
   const template = Template.fromStack(stack);
 
   // THEN
-  
+
   template.hasResourceProperties('AWS::Lambda::Function', Match.objectLike({
     Role: {
       "Fn::GetAtt": [
