@@ -39,9 +39,10 @@ jobs:
 
       # Release to NPM
       - name: Release NPM
-        run: npx -p jsii-release jsii-release-npm
+        run: npx -p jsii-release-npm
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_REGISTRY: https://npm.pkg.github.com/
 
 #      # Release to Pypi
 #      - name: Release Pypi
