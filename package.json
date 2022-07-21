@@ -77,7 +77,7 @@
   ],
   "author": "hi@cdkpatterns.com",
   "repository": {
-    "url": "https://github.com/nideveloper/CDK-SPA-Deploy.git",
+    "url": "https://github.com/contrast-security-oss/CDK-SPA-Deploy.git",
     "type": "git"
   },
   "license": "MIT"
