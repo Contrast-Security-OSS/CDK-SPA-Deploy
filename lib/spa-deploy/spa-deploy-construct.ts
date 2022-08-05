@@ -28,7 +28,8 @@ export interface SPADeployConfig {
   readonly blockPublicAccess?:s3.BlockPublicAccess
   readonly sslMethod?: SSLMethod,
   readonly securityPolicy?: SecurityPolicyProtocol,
-  readonly role?:Role,
+  readonly role?: Role,
+  readonly corsRules?: s3.CorsRule[],
 }
 
 export interface HostedZoneConfig {
@@ -79,6 +80,7 @@ export class SPADeploy extends Construct {
       const bucketConfig:any = {
         websiteIndexDocument: config.indexDoc,
         websiteErrorDocument: config.errorDoc,
+        cors: config.corsRules,
         publicReadAccess: true,
       };
 
@@ -284,7 +286,7 @@ export class SPADeploy extends Construct {
             zone,
             recordNames: [`www.${config.zoneName}`],
             targetDomain: config.zoneName,
-        });          
+        });
       }
 
       return { websiteBucket, distribution };
