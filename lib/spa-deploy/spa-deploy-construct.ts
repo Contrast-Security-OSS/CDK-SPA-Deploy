@@ -33,6 +33,7 @@ export interface SPADeployConfig {
   readonly role?: Role,
   readonly geoRestriction?: GeoRestriction,
   readonly loggingConfig?: LoggingConfiguration,
+  readonly corsRules?: s3.CorsRule[],
 }
 
 export interface HostedZoneConfig {
@@ -83,6 +84,7 @@ export class SPADeploy extends Construct {
       const bucketConfig:any = {
         websiteIndexDocument: config.indexDoc,
         websiteErrorDocument: config.errorDoc,
+        cors: config.corsRules,
         publicReadAccess: true,
       };
 
